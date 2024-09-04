@@ -1,0 +1,40 @@
+services:
+  # Service for database
+  database:
+    image: postgres:15-alpine
+    container_name: atomnyy-api-postgres
+    restart: always
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=atomnyyapi
+
+  # service for API
+  api:
+    build: 
+      context: ..
+      dockerfile: .devcontainer/Dockerfile
+    image: atomnyy-api:dev
+    container_name: atomnyy-api
+    ports:
+    - "3000:3000"
+    environment:
+    - DATABASE_HOST=atomnyy-api-postgres
+    - DATABASE_PORT=5432
+    - DATABASE_USER=postgres
+    - DATABASE_PASSWORD=postgres
+    - DATABASE_NAME=atomnyyapi
+    tty: true
+    stdin_open: true
+    working_dir: /app
+    volumes:
+    - ../:/app
+    depends_on:
+    - database
+
+volumes:
+  postgres_data:
