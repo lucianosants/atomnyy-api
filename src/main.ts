@@ -3,6 +3,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
+import { bearer_key } from './constants/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -19,6 +20,17 @@ async function bootstrap() {
     .setTitle('Atomnyy API')
     .setDescription('API de lista de compras')
     .setVersion('1.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        in: 'header',
+        name: 'Authorization',
+        description: 'Enter JWT Bearer token',
+      },
+      bearer_key,
+    )
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

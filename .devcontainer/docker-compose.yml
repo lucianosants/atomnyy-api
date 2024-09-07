@@ -21,20 +21,20 @@ services:
     image: atomnyy-api:dev
     container_name: atomnyy-api
     ports:
-    - "3000:3000"
+      - "3000:3000"
     environment:
-    - DATABASE_HOST=atomnyy-api-postgres
-    - DATABASE_PORT=5432
-    - DATABASE_USER=postgres
-    - DATABASE_PASSWORD=postgres
-    - DATABASE_NAME=atomnyyapi
+      - DATABASE_HOST=atomnyy-api-postgres
+      - DATABASE_PORT=5432
+      - DATABASE_USER=postgres
+      - DATABASE_PASSWORD=postgres
+      - DATABASE_NAME=atomnyyapi
     tty: true
     stdin_open: true
     working_dir: /app
     volumes:
-    - ../:/app
+      - ../:/app
     depends_on:
-    - database
+      - database
 
 volumes:
   postgres_data:
