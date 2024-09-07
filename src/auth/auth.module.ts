@@ -7,7 +7,6 @@ import { providers } from 'src/constants/providers';
 import { User } from 'src/users/entities/user.entity';
 import { TypeOrmUserRepository } from 'src/users/repositories/typeorm-user.repository';
 
-import { JwtStrategy } from './strategies/jwt-strategy';
 import { AuthController } from './auth.controller';
 
 import { RegisterUserUseCase } from './use-cases/register-user.use-case';
@@ -18,7 +17,8 @@ import { LoginUserUseCase } from './use-cases/login-user.use-case';
     TypeOrmModule.forFeature([User]),
     PassportModule,
     JwtModule.register({
-      secret: process.env.JWT_SECRET || 'supersecret', // Use variáveis de ambiente para o secret
+      global: true,
+      secret: process.env.JWT_SECRET || 'supersecret',
       signOptions: { expiresIn: '1d' },
     }),
   ],
@@ -30,7 +30,6 @@ import { LoginUserUseCase } from './use-cases/login-user.use-case';
       provide: providers.user,
       useExisting: TypeOrmUserRepository,
     },
-    JwtStrategy,
   ],
   exports: [RegisterUserUseCase, LoginUserUseCase],
   controllers: [AuthController],
