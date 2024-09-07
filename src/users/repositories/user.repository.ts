@@ -3,8 +3,7 @@ import { User } from '../entities/user.entity';
 
 export interface IUserRepository {
   create(data: CreateUserDto): Promise<User>;
-  findOneById(id: string): Promise<User | undefined>;
-  findOneByEmail(email: string): Promise<User | undefined>;
-  findMany(): Promise<User[]>;
+  findById(id: string): Promise<User | null>;
+  findByEmail(email: string): Promise<User | null>;
   delete(user: User): Promise<User>;
 }

@@ -19,7 +19,7 @@ export class TypeOrmUserRepository implements IUserRepository {
     return user;
   }
 
-  public async findOneById(id: string): Promise<User | undefined> {
+  public async findById(id: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { id },
     });
@@ -27,18 +27,12 @@ export class TypeOrmUserRepository implements IUserRepository {
     return user;
   }
 
-  public async findOneByEmail(email: string): Promise<User | undefined> {
+  public async findByEmail(email: string): Promise<User | null> {
     const user = await this.userRepository.findOne({
       where: { email },
     });
 
     return user;
-  }
-
-  public async findMany(): Promise<User[]> {
-    const users = await this.userRepository.find();
-
-    return users;
   }
 
   public async delete(user: User): Promise<User> {
