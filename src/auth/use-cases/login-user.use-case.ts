@@ -49,6 +49,10 @@ export class LoginUserUseCase {
 
       return { access_token: jwtToken };
     } catch (error) {
+      if (error instanceof UnauthorizedException) {
+        throw error;
+      }
+
       throw new BadRequestException(error.message);
     }
   }
