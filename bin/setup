@@ -1,0 +1,8 @@
+#!/bin/bash
+
+echo "Starting application setup..."
+
+echo "Running database migrations..."
+npm run migration:run
+
+echo "Setup completed successfully!"

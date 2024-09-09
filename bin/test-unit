@@ -1,0 +1,7 @@
+#!/bin/bash
+
+echo "Starting testings..."
+
+npm run test
+
+echo "Test running successfully!"
