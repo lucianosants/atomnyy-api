@@ -12,6 +12,19 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=atomnyyapi
+  
+  # Service for database test
+  dbtest:
+    build: .
+    image: postgres:15-alpine
+    container_name: atomnyy-api-postgres-test
+    restart: always
+    ports:
+      - '5433:5432'
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=atomnyyapitest
 
   # service for API
   api:
@@ -35,6 +48,9 @@ services:
       - ../:/app
     depends_on:
       - database
+      - dbtest
+    
 
 volumes:
   postgres_data:
+   
