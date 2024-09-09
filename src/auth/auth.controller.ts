@@ -12,6 +12,7 @@ import { LoginRequest } from './models/login-request';
 
 import { RegisterUserUseCase } from './use-cases/register-user.use-case';
 import { LoginUserUseCase } from './use-cases/login-user.use-case';
+import { IsPublic } from './decorators/is-public.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -21,11 +22,13 @@ export class AuthController {
   @Inject(LoginUserUseCase)
   private readonly loginUserUseCase: LoginUserUseCase;
 
+  @IsPublic()
   @Post('register')
   async register(@Body() body: CreateUserDto) {
     return this.registerUserUseCase.execute(body);
   }
 
+  @IsPublic()
   @HttpCode(HttpStatus.OK)
   @Post('login')
   async login(@Body() body: LoginRequest) {
