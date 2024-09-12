@@ -60,7 +60,12 @@ docker compose -f .devcontainer/docker-compose.yml exec api sh bin/test-e2e
 
 
 ## Contributing
+
 See something that can be added or improved? Feel free to **contribute**! You can **fork** the project and submit a **pull request**.
+
+
+## License
+This project is licensed under the MIT License - see the [LICENSE](./LICENSE) file for details.
 
 
 
