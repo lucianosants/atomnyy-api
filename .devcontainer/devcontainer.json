@@ -1,0 +1,29 @@
+{
+    "name": "NestJS Dev Container",
+    "dockerComposeFile": [
+        "docker-compose.yml"
+    ],
+    "service": "api",
+    "workspaceFolder": "/app",
+    "customizations": {
+        "vscode": {
+            "settings": {},
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "eslinter.vscode-eslint",
+                "prettier.vscode-prettier",
+                "jest.vscode-jest"
+            ]
+        }
+    },
+    "features": {
+        "ghcr.io/devcontainers/features/common-utils:2": {},
+        "ghcr.io/devcontainers-contrib/features/zsh-plugins:0": {
+            "plugins": "git git-flow F-Sy-H zsh-autosuggestions zsh-completions",
+            "omzPlugins": "https://github.com/z-shell/F-Sy-H https://github.com/zsh-users/zsh-autosuggestions https://github.com/zsh-users/zsh-completions"
+        },
+        "ghcr.io/stuartleeks/dev-container-features/shell-history:0": {}
+    },
+    "postCreateCommand": "cd /app && npm install"
+}

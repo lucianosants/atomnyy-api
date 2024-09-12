@@ -15,7 +15,6 @@ services:
   
   # Service for database test
   dbtest:
-    build: .
     image: postgres:15-alpine
     container_name: atomnyy-api-postgres-test
     restart: always
@@ -25,6 +24,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=atomnyyapitest
+    volumes:
+      - dbtest_data:/var/lib/postgresql/data
 
   # service for API
   api:
@@ -53,4 +54,5 @@ services:
 
 volumes:
   postgres_data:
+  dbtest_data:
    
