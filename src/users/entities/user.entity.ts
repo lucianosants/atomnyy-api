@@ -1,7 +1,9 @@
+import { ShoppingList } from 'src/shopping-list/entities/shopping-list.entity';
 import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
@@ -27,4 +29,7 @@ export class User {
 
   @CreateDateColumn({ type: 'timestamp' })
   created_at: Date;
+
+  @OneToMany(() => ShoppingList, (shoppingList) => shoppingList.user)
+  shopping_list: ShoppingList[];
 }
