@@ -14,6 +14,7 @@ export class InMemoryUserRepository implements IUserRepository {
       ...data,
       id: randomUUID(),
       created_at: new Date(),
+      shopping_lists: [],
     };
 
     this.users.push(user);

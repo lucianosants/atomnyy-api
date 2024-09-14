@@ -1,4 +1,3 @@
-import { User } from 'src/users/entities/user.entity';
 import {
   Column,
   CreateDateColumn,
@@ -7,12 +6,14 @@ import {
   PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { User } from '../../users/entities/user.entity';
+
 @Entity('shopping_lists')
 export class ShoppingList {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @ManyToOne(() => User, (user) => user.shopping_list)
+  @ManyToOne(() => User, (user) => user.shopping_lists)
   user: User;
 
   @CreateDateColumn()

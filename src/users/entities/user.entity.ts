@@ -1,4 +1,3 @@
-import { ShoppingList } from 'src/shopping-list/entities/shopping-list.entity';
 import {
   Column,
   CreateDateColumn,
@@ -6,6 +5,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
+
+import { ShoppingList } from '../../shopping-list/entities/shopping-list.entity';
 
 @Entity('users')
 export class User {
@@ -31,5 +32,5 @@ export class User {
   created_at: Date;
 
   @OneToMany(() => ShoppingList, (shoppingList) => shoppingList.user)
-  shopping_list: ShoppingList[];
+  shopping_lists: ShoppingList[];
 }
