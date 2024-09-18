@@ -1,34 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ShoppingListService } from './shopping-list.service';
+import { Body, Controller, Inject, Post } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
+
+import { CreateShoppingListUseCase } from './use-cases/create-shopping-list.use-case';
+
 import { CreateShoppingListDto } from './dto/create-shopping-list.dto';
-import { UpdateShoppingListDto } from './dto/update-shopping-list.dto';
+
+import { bearer_key } from '../constants/swagger';
 
 @Controller('shopping-list')
 export class ShoppingListController {
-  constructor(private readonly shoppingListService: ShoppingListService) {}
+  @Inject(CreateShoppingListUseCase)
+  private readonly createShoppingListUseCase: CreateShoppingListUseCase;
 
+  @ApiBearerAuth(bearer_key)
   @Post()
   create(@Body() createShoppingListDto: CreateShoppingListDto) {
-    return this.shoppingListService.create(createShoppingListDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.shoppingListService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shoppingListService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShoppingListDto: UpdateShoppingListDto) {
-    return this.shoppingListService.update(+id, updateShoppingListDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shoppingListService.remove(+id);
+    return this.createShoppingListUseCase.execute({
+      ...createShoppingListDto,
+    });
   }
 }
