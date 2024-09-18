@@ -3,6 +3,7 @@ import {
   IsDateString,
   IsNumber,
   IsOptional,
+  IsString,
   IsUUID,
   Min,
 } from 'class-validator';
@@ -13,6 +14,12 @@ export class CreateShoppingListDto {
   })
   @IsUUID()
   userId: string;
+
+  @ApiProperty({
+    description: 'The name of your shopping list',
+  })
+  @IsString()
+  name: string;
 
   @ApiProperty({
     description: 'The expires date of shopping list',

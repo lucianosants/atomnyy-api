@@ -24,4 +24,7 @@ export class ShoppingList {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   total_price: number;
+
+  @Column({ unique: true })
+  name: string;
 }

@@ -6,6 +6,7 @@ import { ShoppingList } from '../shopping-list/entities/shopping-list.entity';
 
 import { CreateUsersTable1725490309183 } from '../migrations/1725490309183-create_users_table';
 import { CreateShoppingList1726315908950 } from '../migrations/1726315908950-create_shopping_list';
+import { CreateShoppingListName1726662957025 } from '../migrations/1726662957025-create_shopping_list_name';
 
 export const dataSourceOptions: DataSourceOptions = {
   type: 'postgres',
@@ -21,5 +22,9 @@ export const dataSourceOptions: DataSourceOptions = {
 export const dataSource = new DataSource({
   ...dataSourceOptions,
   synchronize: false,
-  migrations: [CreateUsersTable1725490309183, CreateShoppingList1726315908950],
+  migrations: [
+    CreateUsersTable1725490309183,
+    CreateShoppingList1726315908950,
+    CreateShoppingListName1726662957025,
+  ],
 });
