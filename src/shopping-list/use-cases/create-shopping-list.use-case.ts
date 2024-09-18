@@ -1,4 +1,9 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 
 import { providers } from '../../constants/providers';
 
@@ -30,21 +35,36 @@ export class CreateShoppingListUseCase {
   public async execute(
     data: ICreateShoppingListUseCaseRequest,
   ): Promise<ICreateShoppingListUseCaseResponse> {
-    const user = await this.preloadUser(data.userId);
+    try {
+      const user = await this.preloadUser(data.userId);
+      const { expires_at } = setExpirationDateShoppingList();
 
-    const { expires_at } = setExpirationDateShoppingList();
+      const shoppingListAlreadyExists = user.shopping_lists.some(
+        (item) => item.name === data.name,
+      );
 
-    const shoppingList = await this.shoppingListsRepository.create(
-      {
-        ...data,
-        expires_at,
-      },
-      user,
-    );
+      if (shoppingListAlreadyExists) {
+        throw new BadRequestException(`${data.name} already exist`);
+      }
 
-    shoppingList.user = undefined;
+      const shoppingList = await this.shoppingListsRepository.create(
+        {
+          ...data,
+          expires_at,
+        },
+        user,
+      );
 
-    return { shoppingList };
+      shoppingList.user = undefined;
+
+      return { shoppingList };
+    } catch (error) {
+      if (error instanceof BadRequestException) {
+        throw error;
+      }
+
+      throw new BadRequestException(error.message);
+    }
   }
 
   private async preloadUser(userId: string): Promise<User> {
