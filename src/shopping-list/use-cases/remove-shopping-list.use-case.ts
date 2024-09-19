@@ -8,7 +8,6 @@ import {
 import { providers } from '../../constants/providers';
 
 import { TypeOrmShoppingListRepository } from '../repositories/type-orm-shopping-list.repository';
-import { TypeOrmUserRepository } from '../../users/repositories/typeorm-user.repository';
 
 export interface IRemoveShoppingListUseCaseRequest {
   id: string;
@@ -23,9 +22,6 @@ export class RemoveShoppingListUseCase {
   constructor(
     @Inject(providers.shoppingLists)
     private readonly shoppingListsRepository: TypeOrmShoppingListRepository,
-
-    @Inject(providers.user)
-    private readonly userRepository: TypeOrmUserRepository,
   ) {}
 
   public async execute(

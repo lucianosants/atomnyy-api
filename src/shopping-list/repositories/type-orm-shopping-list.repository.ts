@@ -62,4 +62,10 @@ export class TypeOrmShoppingListRepository implements IShoppingListsRepository {
 
     return shoppingList;
   }
+
+  public async rename(shoppingList: ShoppingList): Promise<ShoppingList> {
+    await this.shoppingListRepository.save(shoppingList);
+
+    return shoppingList;
+  }
 }

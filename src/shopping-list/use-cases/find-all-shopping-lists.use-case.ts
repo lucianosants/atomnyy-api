@@ -1,10 +1,11 @@
-import { providers } from 'src/constants/providers';
 import {
   BadRequestException,
   Inject,
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
+
+import { providers } from '../../constants/providers';
 
 import { TypeOrmShoppingListRepository } from '../repositories/type-orm-shopping-list.repository';
 import { TypeOrmUserRepository } from 'src/users/repositories/typeorm-user.repository';

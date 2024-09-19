@@ -8,27 +8,27 @@ import {
 import { providers } from '../../constants/providers';
 
 import { TypeOrmShoppingListRepository } from '../repositories/type-orm-shopping-list.repository';
+import { RenameShoppingListDto } from '../dto/rename-shopping-list.dto';
 
-import { ShoppingList } from '../entities/shopping-list.entity';
-
-export interface IFindShoppingListByIdUseCaseRequest {
+export interface IRenameShoppingListUseCaseRequest
+  extends RenameShoppingListDto {
   id: string;
 }
 
-export interface IFindShoppingListByIdUseCaseResponse {
-  shoppingList: ShoppingList;
+export interface IRenameShoppingListUseCaseResponse {
+  message: string;
 }
 
 @Injectable()
-export class FindShoppingListByIdUseCase {
+export class RenameShoppingListUseCase {
   constructor(
     @Inject(providers.shoppingLists)
     private readonly shoppingListsRepository: TypeOrmShoppingListRepository,
   ) {}
 
   public async execute(
-    data: IFindShoppingListByIdUseCaseRequest,
-  ): Promise<IFindShoppingListByIdUseCaseResponse> {
+    data: IRenameShoppingListUseCaseRequest,
+  ): Promise<IRenameShoppingListUseCaseResponse> {
     try {
       const shoppingList = await this.shoppingListsRepository.findById(data.id);
 
@@ -36,7 +36,13 @@ export class FindShoppingListByIdUseCase {
         throw new NotFoundException('Shopping list not found');
       }
 
-      return { shoppingList };
+      shoppingList.name = data.name;
+
+      await this.shoppingListsRepository.rename(shoppingList);
+
+      return {
+        message: `Shopping list renamed to ${data.name} successfully`,
+      };
     } catch (error) {
       if (error instanceof NotFoundException) {
         throw error;

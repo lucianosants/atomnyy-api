@@ -14,11 +14,13 @@ import { CreateShoppingListUseCase } from './use-cases/create-shopping-list.use-
 import { FindAllShoppingListsUseCase } from './use-cases/find-all-shopping-lists.use-case';
 import { FindShoppingListByIdUseCase } from './use-cases/find-shopping-list-by-id.use-case';
 import { RemoveShoppingListUseCase } from './use-cases/remove-shopping-list.use-case';
+import { RenameShoppingListUseCase } from './use-cases/rename-shopping-list.use-case';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ShoppingList, User])],
   controllers: [ShoppingListController],
   providers: [
+    RenameShoppingListUseCase,
     RemoveShoppingListUseCase,
     FindShoppingListByIdUseCase,
     FindAllShoppingListsUseCase,

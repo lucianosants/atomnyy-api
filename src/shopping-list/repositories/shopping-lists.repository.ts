@@ -19,4 +19,5 @@ export interface IShoppingListsRepository {
   create(data: CreateShoppingListDto, user: User): Promise<ShoppingList>;
   findById(id: string): Promise<ShoppingList | null>;
   delete(shoppingList: ShoppingList): Promise<ShoppingList>;
+  rename(shoppingList: ShoppingList): Promise<ShoppingList>;
 }
