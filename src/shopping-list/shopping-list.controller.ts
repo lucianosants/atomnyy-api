@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Inject,
   Param,
@@ -16,7 +17,9 @@ import { CreateShoppingListDto } from './dto/create-shopping-list.dto';
 import { FindAllShoppingListsUseCase } from './use-cases/find-all-shopping-lists.use-case';
 import { CreateShoppingListUseCase } from './use-cases/create-shopping-list.use-case';
 import { FindShoppingListByIdUseCase } from './use-cases/find-shopping-list-by-id.use-case';
+import { RemoveShoppingListUseCase } from './use-cases/remove-shopping-list.use-case';
 
+@ApiBearerAuth(bearer_key)
 @Controller('shopping-list')
 export class ShoppingListController {
   @Inject(CreateShoppingListUseCase)
@@ -28,7 +31,9 @@ export class ShoppingListController {
   @Inject(FindShoppingListByIdUseCase)
   private readonly findShoppingListByIdUseCase: FindShoppingListByIdUseCase;
 
-  @ApiBearerAuth(bearer_key)
+  @Inject(RemoveShoppingListUseCase)
+  private readonly removeShoppingListUseCase: RemoveShoppingListUseCase;
+
   @Post()
   create(@Body() createShoppingListDto: CreateShoppingListDto) {
     return this.createShoppingListUseCase.execute({
@@ -36,7 +41,6 @@ export class ShoppingListController {
     });
   }
 
-  @ApiBearerAuth(bearer_key)
   @Get('user/:userId')
   findAll(@Param('userId') userId: string, @Query('page') page: number) {
     return this.findAllShoppingListsUseCase.execute({
@@ -45,9 +49,13 @@ export class ShoppingListController {
     });
   }
 
-  @ApiBearerAuth(bearer_key)
   @Get(':id')
   findById(@Param('id') id: string) {
     return this.findShoppingListByIdUseCase.execute({ id });
+  }
+
+  @Delete(':id')
+  remove(@Param('id') id: string) {
+    return this.removeShoppingListUseCase.execute({ id });
   }
 }

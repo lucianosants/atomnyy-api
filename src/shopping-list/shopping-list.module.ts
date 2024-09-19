@@ -13,11 +13,13 @@ import { TypeOrmUserRepository } from '../users/repositories/typeorm-user.reposi
 import { CreateShoppingListUseCase } from './use-cases/create-shopping-list.use-case';
 import { FindAllShoppingListsUseCase } from './use-cases/find-all-shopping-lists.use-case';
 import { FindShoppingListByIdUseCase } from './use-cases/find-shopping-list-by-id.use-case';
+import { RemoveShoppingListUseCase } from './use-cases/remove-shopping-list.use-case';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ShoppingList, User])],
   controllers: [ShoppingListController],
   providers: [
+    RemoveShoppingListUseCase,
     FindShoppingListByIdUseCase,
     FindAllShoppingListsUseCase,
     CreateShoppingListUseCase,
