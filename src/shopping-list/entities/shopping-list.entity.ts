@@ -13,6 +13,9 @@ export class ShoppingList {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  @Column({ unique: true })
+  name: string;
+
   @ManyToOne(() => User, (user) => user.shopping_lists)
   user: User;
 
@@ -24,7 +27,4 @@ export class ShoppingList {
 
   @Column({ type: 'decimal', precision: 10, scale: 2, default: 0 })
   total_price: number;
-
-  @Column({ unique: true })
-  name: string;
 }

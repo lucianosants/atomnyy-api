@@ -2,7 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { IShoppingListsRepository } from './shopping-lists.repository';
+import {
+  IFindAllShoppingLists,
+  IShoppingListsRepository,
+} from './shopping-lists.repository';
 
 import { ShoppingList } from '../entities/shopping-list.entity';
 import { User } from '../../users/entities/user.entity';
@@ -16,19 +19,22 @@ export class TypeOrmShoppingListRepository implements IShoppingListsRepository {
     private shoppingListRepository: Repository<ShoppingList>,
   ) {}
 
-  public async findAll(userId: string): Promise<ShoppingList[] | null> {
-    const shoppingLists = await this.shoppingListRepository.find({
-      relations: {
-        user: true,
-      },
-      where: { user: { id: userId } },
-      order: { created_at: 'DESC' },
-      select: {
-        user: { id: true, name: true },
-      },
-    });
+  public async findAll(
+    userId: string,
+    page: number,
+  ): Promise<IFindAllShoppingLists | null> {
+    const totalPerPage = 5;
+    const [shoppingLists, total] =
+      await this.shoppingListRepository.findAndCount({
+        where: { user: { id: userId } },
+        order: { created_at: 'DESC' },
+        take: totalPerPage,
+        skip: (page - 1) * 5,
+      });
 
-    return shoppingLists;
+    const totalPages = Math.ceil(total / totalPerPage);
+
+    return { total, totalPerPage, totalPages, shoppingLists };
   }
 
   public async create(
