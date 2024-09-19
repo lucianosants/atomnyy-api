@@ -15,6 +15,7 @@ import { CreateShoppingListDto } from './dto/create-shopping-list.dto';
 
 import { FindAllShoppingListsUseCase } from './use-cases/find-all-shopping-lists.use-case';
 import { CreateShoppingListUseCase } from './use-cases/create-shopping-list.use-case';
+import { FindShoppingListByIdUseCase } from './use-cases/find-shopping-list-by-id.use-case';
 
 @Controller('shopping-list')
 export class ShoppingListController {
@@ -23,6 +24,9 @@ export class ShoppingListController {
 
   @Inject(FindAllShoppingListsUseCase)
   private readonly findAllShoppingListsUseCase: FindAllShoppingListsUseCase;
+
+  @Inject(FindShoppingListByIdUseCase)
+  private readonly findShoppingListByIdUseCase: FindShoppingListByIdUseCase;
 
   @ApiBearerAuth(bearer_key)
   @Post()
@@ -33,11 +37,17 @@ export class ShoppingListController {
   }
 
   @ApiBearerAuth(bearer_key)
-  @Get(':id')
-  findAll(@Param('id') id: string, @Query('page') page: number) {
+  @Get('user/:userId')
+  findAll(@Param('userId') userId: string, @Query('page') page: number) {
     return this.findAllShoppingListsUseCase.execute({
-      userId: id,
+      userId,
       page: page || 1,
     });
+  }
+
+  @ApiBearerAuth(bearer_key)
+  @Get(':id')
+  findById(@Param('id') id: string) {
+    return this.findShoppingListByIdUseCase.execute({ id });
   }
 }
