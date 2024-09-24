@@ -7,7 +7,7 @@ import {
 
 import { providers } from '../../constants/providers';
 
-import { TypeOrmShoppingListRepository } from '../repositories/type-orm-shopping-list.repository';
+import { IShoppingListsRepository } from '../repositories/shopping-lists.repository';
 import { RenameShoppingListDto } from '../dto/rename-shopping-list.dto';
 
 export interface IRenameShoppingListUseCaseRequest
@@ -23,7 +23,7 @@ export interface IRenameShoppingListUseCaseResponse {
 export class RenameShoppingListUseCase {
   constructor(
     @Inject(providers.shoppingLists)
-    private readonly shoppingListsRepository: TypeOrmShoppingListRepository,
+    private readonly shoppingListsRepository: IShoppingListsRepository,
   ) {}
 
   public async execute(

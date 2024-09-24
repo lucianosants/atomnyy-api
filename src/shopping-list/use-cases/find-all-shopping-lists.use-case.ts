@@ -7,10 +7,11 @@ import {
 
 import { providers } from '../../constants/providers';
 
-import { TypeOrmShoppingListRepository } from '../repositories/type-orm-shopping-list.repository';
-import { TypeOrmUserRepository } from 'src/users/repositories/typeorm-user.repository';
-
-import { IFindAllShoppingLists } from '../repositories/shopping-lists.repository';
+import {
+  IFindAllShoppingLists,
+  IShoppingListsRepository,
+} from '../repositories/shopping-lists.repository';
+import { IUserRepository } from '../../users/repositories/user.repository';
 
 export interface IFindAllShoppingListsUseCaseRequest {
   userId: string;
@@ -24,10 +25,10 @@ export interface IFindAllShoppingListsUseCaseResponse
 export class FindAllShoppingListsUseCase {
   constructor(
     @Inject(providers.shoppingLists)
-    private readonly shoppingListsRepository: TypeOrmShoppingListRepository,
+    private readonly shoppingListsRepository: IShoppingListsRepository,
 
     @Inject(providers.user)
-    private readonly userRepository: TypeOrmUserRepository,
+    private readonly userRepository: IUserRepository,
   ) {}
 
   public async execute(
