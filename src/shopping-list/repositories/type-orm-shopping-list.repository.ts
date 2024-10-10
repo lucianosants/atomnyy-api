@@ -29,7 +29,7 @@ export class TypeOrmShoppingListRepository implements IShoppingListsRepository {
         where: { user: { id: userId } },
         order: { created_at: 'DESC' },
         take: totalPerPage,
-        skip: (page - 1) * 5,
+        skip: (page - 1) * totalPerPage,
       });
 
     const totalPages = Math.ceil(total / totalPerPage);

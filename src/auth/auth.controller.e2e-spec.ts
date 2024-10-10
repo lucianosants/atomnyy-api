@@ -1,30 +1,22 @@
-import 'dotenv/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
-import { DataSource, DataSourceOptions } from 'typeorm';
+import { DataSource } from 'typeorm';
 import * as request from 'supertest';
-
-import { User } from '../users/entities/user.entity';
-import { AuthModule } from './auth.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+
+import { AuthModule } from './auth.module';
+import { dataSourceTest } from '../database/database-source-test';
+import { AuthGuard } from './auth.guard';
 
 describe('AuthController', () => {
   let app: INestApplication;
 
-  const dataSourceTest: DataSourceOptions = {
-    type: 'postgres',
-    host: 'atomnyy-api-postgres-test',
-    port: 5432,
-    username: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASS,
-    database: 'atomnyyapitest',
-    entities: [User],
-    synchronize: true,
-  };
-
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
+        ConfigModule.forRoot({ isGlobal: true }),
         AuthModule,
         TypeOrmModule.forRootAsync({
           useFactory: async () => {
@@ -32,16 +24,28 @@ describe('AuthController', () => {
           },
         }),
       ],
+      providers: [
+        {
+          provide: APP_GUARD,
+          useClass: AuthGuard,
+        },
+      ],
     }).compile();
 
     app = module.createNestApplication();
     await app.init();
   });
 
+  beforeEach(async () => {
+    const dataSource = await new DataSource(dataSourceTest).initialize();
+    await dataSource.destroy();
+  });
+
   afterAll(async () => {
     const dataSource = await new DataSource(dataSourceTest).initialize();
     await dataSource.dropDatabase();
     await dataSource.destroy();
+
     await app.close();
   });
 
@@ -55,9 +59,9 @@ describe('AuthController', () => {
           email: 'john.doe@example.com',
           password_hash: 'password123',
           cellphone: '5589912345678',
-        })
-        .expect(201);
+        });
       expect(response.body.message).toEqual('User created successfully');
+      expect(response.statusCode).toBe(201);
     });
   });
 
@@ -68,12 +72,12 @@ describe('AuthController', () => {
         .send({
           email: 'john.doe@example.com',
           password_hash: 'password123',
-        })
-        .expect(200);
+        });
 
       const { access_token } = response.body;
 
       expect(access_token).toBeDefined();
+      expect(response.statusCode).toBe(200);
     });
   });
 });
